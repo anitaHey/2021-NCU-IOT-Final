@@ -10,6 +10,7 @@ using System.Threading;
 
 using Newtonsoft.Json;
 using Position.Model;
+using System.Collections.ObjectModel;
 
 namespace Position.ViewModel
 {
@@ -60,6 +61,10 @@ namespace Position.ViewModel
             SelectedD = 0;
             Point_left = 0;
             Point_bottom = 0;
+
+            // TODO: add point by list
+            PointData robot = new PointData("Robot", "#FFF45B69");
+            PointItems.Add(robot);
 
             AddNewPoint = new RelayCommand(async () => {
 
@@ -492,5 +497,7 @@ namespace Position.ViewModel
                 RaisePropertyChanged(() => Point_bottom);
             }
         }
+
+        public ObservableCollection<PointData> PointItems { get; set; } = new ObservableCollection<PointData>();
     }
 }

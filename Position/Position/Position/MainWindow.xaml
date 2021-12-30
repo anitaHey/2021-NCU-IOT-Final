@@ -8,9 +8,24 @@
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" Height="450" Width="800">
     <Grid RenderTransformOrigin="0.345,0.6">
-        <Canvas HorizontalAlignment="Left" Height="281" Margin="45,94,0,0" VerticalAlignment="Top" Width="481" Background="#FFF0F0F0">
-            <Ellipse Fill="#FFF45B69" Height="15" Canvas.Left="{Binding Point_left}" Stroke="Black" Canvas.Bottom="{Binding Point_bottom}" Width="18"/>
-        </Canvas>
+        <ItemsControl ItemsSource="{Binding PointItems}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas IsItemsHost="True" HorizontalAlignment="Left" Height="281" Margin="45,94,0,0" VerticalAlignment="Top" Width="481" Background="#FFF0F0F0"></Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding x}"/>
+                    <Setter Property="Canvas.Bottom" Value="{Binding y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Ellipse Fill="{Binding color}" Height="15" Stroke="Black" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Button Command="{Binding StartServer}" Content="Start Server" HorizontalAlignment="Left" Margin="45,30,0,0" VerticalAlignment="Top" Width="132" Height="39"/>
         <Label Content="{Binding ServerStatus}" HorizontalAlignment="Left" Margin="195,37,0,0" VerticalAlignment="Top" Width="331"/>
         <Ellipse Fill="#FF767676" HorizontalAlignment="Left" Height="33" Margin="29,80,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>

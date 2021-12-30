@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Position.Model
 {
-    class PDUUWB
+    public class PDUUWB
     {
         public enum Intent
         {
