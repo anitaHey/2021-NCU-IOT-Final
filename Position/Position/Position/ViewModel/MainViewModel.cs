@@ -30,6 +30,8 @@ namespace Position.ViewModel
         byte[] recvData = new byte[1024]; //接收的資料，必須為位元組
         byte[] sendData = new byte[1024]; //傳送的資料，必須為位元組
         int recvLen; //接收的資料長度
+        Timer timer;
+        Vector2 mapWL;
         bool _isUWBConnect;
         bool isUWBConnect
         {
@@ -51,6 +53,13 @@ namespace Position.ViewModel
         public MainViewModel()
         {
             ServerStatus = "Server Close";
+            mapWL = new Vector2(481, 281);
+            SelectedA = 0;
+            SelectedB = 0;
+            SelectedC = 0;
+            SelectedD = 0;
+            Point_left = 0;
+            Point_bottom = 0;
 
             AddNewPoint = new RelayCommand(async () => {
 
@@ -68,10 +77,101 @@ namespace Position.ViewModel
             });
         }
 
+        public void setTimer()
+        {
+            this.timer = new Timer(new System.Threading.TimerCallback(updateUI), "update", 1, 100);
+        }
+
+        public void updateUI(object State)
+        {
+            if (base1Dis != -1 && base2Dis != -1 && base3Dis != -1)
+                UpdateTagPosition(base1Dis, base2Dis, base3Dis);
+        }
+
+        public void UpdateTagPosition(float base1, float base2, float base3)
+        {
+            List<TagPoint> points = new List<TagPoint>();
+            if (SelectedA != 0)
+            {
+                double distance = GetBaseDistance(SelectedA, base1, base2, base3);
+                TagPoint p = new TagPoint() { X = 0, Y = Convert.ToDouble(Length), Distance = distance };
+                points.Add(p);
+            }
+            if (SelectedB != 0)
+            {
+                double distance = GetBaseDistance(SelectedB, base1, base2, base3);
+                TagPoint p = new TagPoint() { X = 0, Y = 0, Distance = distance };
+                points.Add(p);
+            }
+            if (SelectedC != 0)
+            {
+                double distance = GetBaseDistance(SelectedC, base1, base2, base3);
+                TagPoint p = new TagPoint() { X = Convert.ToDouble(Width), Y = Convert.ToDouble(Length), Distance = distance };
+                points.Add(p);
+            }
+            if (SelectedD != 0)
+            {
+                double distance = GetBaseDistance(SelectedD, base1, base2, base3);
+                TagPoint p = new TagPoint() { X = Convert.ToDouble(Width), Y = 0, Distance = distance };
+                points.Add(p);
+            }
+
+            if(points.Count == 3)
+            {
+                var pTag = GetPiontByThree(points);
+                ServerStatus = $"X : {pTag.X}, Y : {pTag.Y}\n";
+                var x = mapWL.x * pTag.X / Convert.ToDouble(Width);
+                var y = mapWL.y * pTag.Y / Convert.ToDouble(Length);
+                ServerStatus += $"X : {x}, Y : {y}";
+
+                Point_bottom = y;
+                Point_left = x;
+                //var vector = new Vector2((float)x, (float)y) - tagRect.anchoredPosition;
+                ////tagRect.anchoredPosition = new Vector2((float)x, (float)y);
+                //tagRect.anchoredPosition += vector * 10;
+            }
+
+        }
+
+        double GetBaseDistance(int value, float base1, float base2, float base3)
+        {
+            double distance = 0;
+            switch (value)
+            {
+                case 1:
+                    distance = base1;
+                    break;
+                case 2:
+                    distance = base2;
+                    break;
+                case 3:
+                    distance = base3;
+                    break;
+            }
+            return distance;
+        }
+
+        TagPoint GetPiontByThree(List<TagPoint> points)
+        {
+            var A = points[0].X - points[2].X;
+            var B = points[0].Y - points[2].Y;
+            var C = Math.Pow(points[0].X, 2) - Math.Pow(points[2].X, 2) + Math.Pow(points[0].Y, 2) - Math.Pow(points[2].Y, 2) + Math.Pow(points[2].Distance, 2) - Math.Pow(points[0].Distance, 2);
+            var D = points[1].X - points[2].X;
+            var E = points[1].Y - points[2].Y;
+            var F = Math.Pow(points[1].X, 2) - Math.Pow(points[2].X, 2) + Math.Pow(points[1].Y, 2) - Math.Pow(points[2].Y, 2) + Math.Pow(points[2].Distance, 2) - Math.Pow(points[1].Distance, 2);
+
+            var x = (B * F - E * C) / (2 * B * D - 2 * A * E);
+            var y = (A * F - D * C) / (2 * A * E - 2 * B * D);
+
+            TagPoint P = new TagPoint() { X = x, Y = y, Distance = 0 };
+            return P;
+        }
+
         public void OpenServer()
         {
             isSocketClose = false;
-            ipEnd = new IPEndPoint(IPAddress.Any, 5566);
+            IPAddress ip = IPAddress.Parse("192.168.0.103");
+            ipEnd = new IPEndPoint(ip, 5566);
             //定義套接字型別,在主執行緒中定義
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             //連線
@@ -88,15 +188,17 @@ namespace Position.ViewModel
             string ipv4 = GetLocalIPv4();
             ServerStatus = $"IP : {ipv4}";
             isUWBConnect = false;
+
+            setTimer();
         }
 
         void AcceptClient(IAsyncResult iar)
         {
             Socket server = iar.AsyncState as Socket;
             Socket client = server.EndAccept(iar); // 保存客户端
-            // print("【System：new client conneted...】");
+            Console.WriteLine("【System：new client conneted...】");
             //socketlist.Add(client);
-            // print("【客户端IP：】" + client.RemoteEndPoint);
+            Console.WriteLine("【客户端IP：】" + client.RemoteEndPoint);
             var pdu = new PDUUWB();
             pdu.msg = "welcome";
             string msg = JsonConvert.SerializeObject(pdu);
@@ -122,10 +224,10 @@ namespace Position.ViewModel
                 }
                 catch (Exception e)
                 {
-                    // print("Exception: " + e.Message);
+                    Console.WriteLine("Exception: " + e.Message);
                     IPEndPoint point = socket.RemoteEndPoint as IPEndPoint;
                     string ipEndpoint = point.Address.ToString();
-                    // print(ipEndpoint + "：退出...");
+                    Console.WriteLine(ipEndpoint + "：退出...");
                     client2Tread.Remove(socket);
                     if (isUWB)
                         isUWBConnect = false;
@@ -134,32 +236,37 @@ namespace Position.ViewModel
                 }
                 string resMsg = Encoding.UTF8.GetString(buffer, 0, length);
                 resMsg = JsonValidate(resMsg);
-                var pdu = JsonConvert.DeserializeObject<PDUUWB>(resMsg);
-                switch (pdu.intent)
+                if(resMsg.Length > 3)
                 {
-                    case PDUUWB.Intent.Connect:
-                        if (pdu.msg.Equals("UWB"))
-                        {
-                            UWBSocket = socket;
-                            isUWBConnect = true;
-                            isUWB = true;
-                        }
+                    var pdu = JsonConvert.DeserializeObject<PDUUWB>(resMsg);
+                    Console.WriteLine(pdu);
+                    switch (pdu.intent)
+                    {
+                        case PDUUWB.Intent.Connect:
+                            if (pdu.msg.Equals("UWB"))
+                            {
+                                UWBSocket = socket;
+                                isUWBConnect = true;
+                                isUWB = true;
+                            }
 
-                        break;
-                    case PDUUWB.Intent.TranferData:
-                        base1Dis = pdu.base1;
-                        base2Dis = pdu.base2;
-                        base3Dis = pdu.base3;
-                        break;
-                    default:
-                        break;
+                            break;
+                        case PDUUWB.Intent.TranferData:
+                            base1Dis = pdu.base1;
+                            base2Dis = pdu.base2;
+                            base3Dis = pdu.base3;
+                            break;
+                        default:
+                            break;
+                    }
+                    IPEndPoint IEP = socket.RemoteEndPoint as IPEndPoint;
+                    string ip = IEP.Address.ToString();
+                    string time = DateTime.Now.ToString();
+                    resMsg = "[" + ip + "  " + time + "]" + ": \n" + resMsg;
+                    //Console.WriteLine(resMsg);
+                    //SendMsgToAll(resMsg);
                 }
-                IPEndPoint IEP = socket.RemoteEndPoint as IPEndPoint;
-                string ip = IEP.Address.ToString();
-                string time = DateTime.Now.ToString();
-                resMsg = "[" + ip + "  " + time + "]" + ": \n" + resMsg;
-                //Console.WriteLine(resMsg);
-                //SendMsgToAll(resMsg);
+
             }
         }
         String JsonValidate(string json)
@@ -179,16 +286,20 @@ namespace Position.ViewModel
                 }
             }
             json = json.Substring(0, index + 1);
+            if (count != 0) json = "";
             return json;
         }
         //伺服器接收
         void SocketReceive()
         {
-            //一旦接受連線，建立一個客戶端
-            Socket client = serverSocket.Accept();
-            Thread th = new Thread(ReceiveMsg); // 开启客户端线程
-            th.Start(client);
-            client2Tread[client] = th;
+            while (true)
+            {
+                //一旦接受連線，建立一個客戶端
+                Socket client = serverSocket.Accept();
+                Thread th = new Thread(ReceiveMsg); // 开启客户端线程
+                th.Start(client);
+                client2Tread[client] = th;
+            }
         }
 
         //連線關閉
@@ -258,8 +369,8 @@ namespace Position.ViewModel
             }
         }
 
-        private string _selectedA;
-        public string SelectedA
+        private int _selectedA;
+        public int SelectedA
         {
             get
             {
@@ -275,8 +386,8 @@ namespace Position.ViewModel
             }
         }
 
-        private string _selectedB;
-        public string SelectedB
+        private int _selectedB;
+        public int SelectedB
         {
             get
             {
@@ -292,8 +403,8 @@ namespace Position.ViewModel
             }
         }
 
-        private string _selectedC;
-        public string SelectedC
+        private int _selectedC;
+        public int SelectedC
         {
             get
             {
@@ -309,8 +420,8 @@ namespace Position.ViewModel
             }
         }
 
-        private string _selectedD;
-        public string SelectedD
+        private int _selectedD;
+        public int SelectedD
         {
             get
             {
@@ -344,6 +455,41 @@ namespace Position.ViewModel
             {
                 _length = value;
                 RaisePropertyChanged(() => Length);
+            }
+        }
+
+        private double _point_left;
+        public double Point_left
+        {
+            get
+            {
+                return _point_left;
+            }
+
+            set
+            {
+                if (_point_left == value) return;
+
+                _point_left = value;
+                RaisePropertyChanged(() => Point_left);
+            }
+        }
+
+
+        private double _point_bottom;
+        public double Point_bottom
+        {
+            get
+            {
+                return _point_bottom;
+            }
+
+            set
+            {
+                if (_point_bottom == value) return;
+
+                _point_bottom = value;
+                RaisePropertyChanged(() => Point_bottom);
             }
         }
     }

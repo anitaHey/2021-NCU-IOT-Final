@@ -8,9 +8,11 @@
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" Height="450" Width="800">
     <Grid RenderTransformOrigin="0.345,0.6">
-        <Canvas HorizontalAlignment="Left" Height="281" Margin="45,94,0,0" VerticalAlignment="Top" Width="481" Background="#FFF0F0F0"/>
+        <Canvas HorizontalAlignment="Left" Height="281" Margin="45,94,0,0" VerticalAlignment="Top" Width="481" Background="#FFF0F0F0">
+            <Ellipse Fill="#FFF45B69" Height="15" Canvas.Left="{Binding Point_left}" Stroke="Black" Canvas.Bottom="{Binding Point_bottom}" Width="18"/>
+        </Canvas>
         <Button Command="{Binding StartServer}" Content="Start Server" HorizontalAlignment="Left" Margin="45,30,0,0" VerticalAlignment="Top" Width="132" Height="39"/>
-        <Label Content="{Binding ServerStatus}" HorizontalAlignment="Left" Margin="195,37,0,0" VerticalAlignment="Top" Width="144"/>
+        <Label Content="{Binding ServerStatus}" HorizontalAlignment="Left" Margin="195,37,0,0" VerticalAlignment="Top" Width="331"/>
         <Ellipse Fill="#FF767676" HorizontalAlignment="Left" Height="33" Margin="29,80,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
         <Ellipse Fill="#FF767676" HorizontalAlignment="Left" Height="33" Margin="29,354,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
         <Ellipse Fill="#FF767676" HorizontalAlignment="Left" Height="33" Margin="506,84,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
@@ -20,32 +22,32 @@
         <Label Content="D" HorizontalAlignment="Left" Margin="515,358,0,0" VerticalAlignment="Top" Width="26" Height="23" Foreground="White" RenderTransformOrigin="3.888,0.827"/>
         <Label Content="C" HorizontalAlignment="Left" Margin="515,90,0,0" VerticalAlignment="Top" Width="26" Height="23" Foreground="White" RenderTransformOrigin="3.888,0.827"/>
         <Label Content="A point" HorizontalAlignment="Left" Margin="553,37,0,0" VerticalAlignment="Top" Width="57"/>
-        <ComboBox HorizontalAlignment="Left" Margin="626,37,0,0" VerticalAlignment="Top" Width="120" SelectedItem="{Binding SelectedA}">
+        <ComboBox HorizontalAlignment="Left" Margin="626,37,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="{Binding SelectedA}">
             <ComboBoxItem Content="None" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag1" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag2" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag3" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base1" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base2" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base3" HorizontalAlignment="Left" Width="118"/>
         </ComboBox>
         <Label Content="B point" HorizontalAlignment="Left" Margin="553,73,0,0" VerticalAlignment="Top" Width="57"/>
         <Label Content="C point" HorizontalAlignment="Left" Margin="553,111,0,0" VerticalAlignment="Top" Width="57"/>
         <Label Content="D point" HorizontalAlignment="Left" Margin="553,149,0,0" VerticalAlignment="Top" Width="57"/>
-        <ComboBox HorizontalAlignment="Left" Margin="626,77,0,0" VerticalAlignment="Top" Width="120" SelectedItem="{Binding SelectedB}">
+        <ComboBox HorizontalAlignment="Left" Margin="626,77,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="{Binding SelectedB}">
             <ComboBoxItem Content="None" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag1" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag2" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag3" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base1" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base2" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base3" HorizontalAlignment="Left" Width="118"/>
         </ComboBox>
-        <ComboBox HorizontalAlignment="Left" Margin="626,115,0,0" VerticalAlignment="Top" Width="120" SelectedItem="{Binding SelectedC}">
+        <ComboBox HorizontalAlignment="Left" Margin="626,115,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="{Binding SelectedC}">
             <ComboBoxItem Content="None" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag1" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag2" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag3" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base1" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base2" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base3" HorizontalAlignment="Left" Width="118"/>
         </ComboBox>
-        <ComboBox HorizontalAlignment="Left" Margin="626,153,0,0" VerticalAlignment="Top" Width="120" SelectedItem="{Binding SelectedD}">
+        <ComboBox HorizontalAlignment="Left" Margin="626,153,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="{Binding SelectedD}">
             <ComboBoxItem Content="None" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag1" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag2" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Tag3" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base1" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base2" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Base3" HorizontalAlignment="Left" Width="118"/>
         </ComboBox>
         <Button Command="{Binding AddNewPoint}" Content="Add point" HorizontalAlignment="Left" Margin="553,307,0,0" VerticalAlignment="Top" Width="193" Height="28"/>
         <TextBox Text="{Binding NewPointName}" HorizontalAlignment="Left" Height="31" Margin="553,271,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="193"/>
