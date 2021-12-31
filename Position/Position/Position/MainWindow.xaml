@@ -22,7 +22,10 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse Fill="{Binding color}" Height="15" Stroke="Black" />
+                    <Grid Width="20" Height="20">
+                        <Ellipse Fill="{Binding color}" Height="20" Width="20" Stroke="Black" />
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding pointName}" TextAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

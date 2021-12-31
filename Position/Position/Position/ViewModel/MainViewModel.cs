@@ -33,6 +33,8 @@ namespace Position.ViewModel
         int recvLen; //接收的資料長度
         Timer timer;
         Vector2 mapWL;
+        PointData robot;
+        DatabaseManager database;
         bool _isUWBConnect;
         bool isUWBConnect
         {
@@ -59,15 +61,26 @@ namespace Position.ViewModel
             SelectedB = 0;
             SelectedC = 0;
             SelectedD = 0;
-            Point_left = 0;
-            Point_bottom = 0;
 
-            // TODO: add point by list
-            PointData robot = new PointData("Robot", "#FFF45B69");
+            database = new DatabaseManager();
+            PointItems = database.loadPoint();
+
+            robot = new PointData("me", "#FFF45B69");
+            robot.x = 70;
+            robot.y = 70;
             PointItems.Add(robot);
 
             AddNewPoint = new RelayCommand(async () => {
+                if(NewPointName != "")
+                {
+                    PointData tem = new PointData(NewPointName, "#ceefe4");
+                    tem.x = robot.x;
+                    tem.y = robot.y;
+                    PointItems.Add(tem);
 
+                    database.addPoint(tem);
+                }
+               
             });
 
             StartServer = new RelayCommand(async () => {
@@ -129,8 +142,8 @@ namespace Position.ViewModel
                 var y = mapWL.y * pTag.Y / Convert.ToDouble(Length);
                 ServerStatus += $"X : {x}, Y : {y}";
 
-                Point_bottom = y;
-                Point_left = x;
+                robot.y = y;
+                robot.x = x;
                 //var vector = new Vector2((float)x, (float)y) - tagRect.anchoredPosition;
                 ////tagRect.anchoredPosition = new Vector2((float)x, (float)y);
                 //tagRect.anchoredPosition += vector * 10;
@@ -463,41 +476,6 @@ namespace Position.ViewModel
             }
         }
 
-        private double _point_left;
-        public double Point_left
-        {
-            get
-            {
-                return _point_left;
-            }
-
-            set
-            {
-                if (_point_left == value) return;
-
-                _point_left = value;
-                RaisePropertyChanged(() => Point_left);
-            }
-        }
-
-
-        private double _point_bottom;
-        public double Point_bottom
-        {
-            get
-            {
-                return _point_bottom;
-            }
-
-            set
-            {
-                if (_point_bottom == value) return;
-
-                _point_bottom = value;
-                RaisePropertyChanged(() => Point_bottom);
-            }
-        }
-
-        public ObservableCollection<PointData> PointItems { get; set; } = new ObservableCollection<PointData>();
+        public ObservableCollection<PointData> PointItems { get; set; }
     }
 }
