@@ -1,0 +1,11 @@
+﻿<Application x:Class="IOTFinalServer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:IOTFinalServer"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Position.ViewModel" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
