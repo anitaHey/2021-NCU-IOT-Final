@@ -118,7 +118,10 @@
     </ApplicationDefinition>
     <Compile Include="Model\DatabaseManager.cs" />
     <Compile Include="Model\OrderData.cs" />
+    <Compile Include="Model\SendToZenboData.cs" />
     <Compile Include="Model\ServiceData.cs" />
+    <Compile Include="Model\SocketExtensions.cs" />
+    <Compile Include="Model\ConnectServer.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\OrderViewModel.cs" />
     <Compile Include="ViewModel\PositionViewModel.cs" />

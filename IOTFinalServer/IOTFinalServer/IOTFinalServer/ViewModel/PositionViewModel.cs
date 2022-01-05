@@ -11,6 +11,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using IOTFinalServer.Model;
 using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace IOTFinalServer.ViewModel
 {
@@ -52,7 +53,7 @@ namespace IOTFinalServer.ViewModel
         public RelayCommand AddNewPoint { get; private set; }
         public RelayCommand StartServer { get; private set; }
 
-        public MainViewModel()
+        public PositionViewModel()
         {
             ServerStatus = "Server Close";
             mapWL = new Vector2(481, 281);
@@ -65,24 +66,24 @@ namespace IOTFinalServer.ViewModel
             PointItems = database.loadPoint();
 
             robot = new PointData("me", "#FFF45B69");
-            robot.x = 70;
-            robot.y = 70;
             PointItems.Add(robot);
+            Messenger.Default.Send(PointItems, "PointItems");
 
-            AddNewPoint = new RelayCommand(async () => {
+            AddNewPoint = new RelayCommand(() => {
                 if (NewPointName != "")
                 {
                     PointData tem = new PointData(NewPointName, "#ceefe4");
-                    tem.x = robot.x;
-                    tem.y = robot.y;
+                    tem.X = robot.X;
+                    tem.Y = robot.Y;
                     PointItems.Add(tem);
+                    Messenger.Default.Send(PointItems, "PointItems");
 
                     database.addPoint(tem);
                 }
 
             });
 
-            StartServer = new RelayCommand(async () => {
+            StartServer = new RelayCommand(() => {
                 if (isSocketClose)
                 {
                     OpenServer();
@@ -142,8 +143,8 @@ namespace IOTFinalServer.ViewModel
                 var y = mapWL.y * pTag.Y / Convert.ToDouble(Length);
                 ServerStatus += $"X : {x}, Y : {y}";
 
-                robot.y = y;
-                robot.x = x;
+                robot.Y = y;
+                robot.X = x;
                 //var vector = new Vector2((float)x, (float)y) - tagRect.anchoredPosition;
                 ////tagRect.anchoredPosition = new Vector2((float)x, (float)y);
                 //tagRect.anchoredPosition += vector * 10;
@@ -188,7 +189,8 @@ namespace IOTFinalServer.ViewModel
         public void OpenServer()
         {
             isSocketClose = false;
-            IPAddress ip = IPAddress.Parse("192.168.0.103");
+            string ipv4 = GetLocalIPv4();
+            IPAddress ip = IPAddress.Parse(ipv4);
             ipEnd = new IPEndPoint(ip, 5566);
             //定義套接字型別,在主執行緒中定義
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -203,7 +205,7 @@ namespace IOTFinalServer.ViewModel
             connectThread = new Thread(new ThreadStart(SocketReceive));
             connectThread.Start();
             //string ipv4 = IPManager.GetIP(ADDRESSFAM.IPv4);
-            string ipv4 = GetLocalIPv4();
+            
             ServerStatus = $"IP : {ipv4}";
             isUWBConnect = false;
 
@@ -257,7 +259,6 @@ namespace IOTFinalServer.ViewModel
                 if (resMsg.Length > 3)
                 {
                     var pdu = JsonConvert.DeserializeObject<PDUUWB>(resMsg);
-                    Console.WriteLine(pdu);
                     switch (pdu.intent)
                     {
                         case PDUUWB.Intent.Connect:

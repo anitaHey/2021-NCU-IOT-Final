@@ -5,13 +5,93 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IOTFinalServer"
         mc:Ignorable="d"
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid HorizontalAlignment="Left" Height="343" Margin="13,66,0,0" VerticalAlignment="Top" Width="758" ItemsSource="{Binding ServiceList}" AutoGenerateColumns="False"></DataGrid>
-        <Button Content="Unfinished service" HorizontalAlignment="Left" Margin="12,13,0,0" VerticalAlignment="Top" Width="101" Height="33"/>
-        <Button Content="Finished service" HorizontalAlignment="Left" Margin="136,13,0,0" VerticalAlignment="Top" Width="107" Height="33"/>
-        <Button Content="Open Position window" HorizontalAlignment="Left" Margin="602,13,0,0" VerticalAlignment="Top" Width="169" Height="33"/>
-        <Button Content="Open Order window" HorizontalAlignment="Left" Margin="450,13,0,0" VerticalAlignment="Top" Width="127" Height="33" Background="#FFD2F0F7"/>
-        
+        <Button Command="{Binding ToUnfinished}"  Content="Unfinished service" HorizontalAlignment="Left" Margin="12,13,0,0" VerticalAlignment="Top" Width="119" Height="33"/>
+        <Button Command="{Binding ToFinished}" Content="Finished service" HorizontalAlignment="Left" Margin="136,13,0,0" VerticalAlignment="Top" Width="121" Height="33"/>
+        <Button Command="{Binding OpenPosition}" Content="Open Position window" HorizontalAlignment="Left" Margin="602,13,0,0" VerticalAlignment="Top" Width="169" Height="33"/>
+        <Button Command="{Binding OpenOrder}" Content="Open Order window" HorizontalAlignment="Left" Margin="450,13,0,0" VerticalAlignment="Top" Width="127" Height="33" Background="#FFD2F0F7"/>
+        <ListView HorizontalAlignment="Left" Height="347" Margin="13,65,0,0" VerticalAlignment="Top" Width="772" ItemsSource="{Binding ShowServiceList}" SelectedItem="{Binding ServiceNode}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="772" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="5,0" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="LightGray" />
+                                <Setter Property="Background" Value="#f2f4f6" />
+                            </Style>
+                        </Grid.Resources>
+                        <Border Grid.Column="0">
+                            <TextBlock Text="{Binding id}" />
+                        </Border>
+                        <Border Grid.Column="1" >
+                            <TextBlock Text="{Binding table_id}" />
+                        </Border>
+                        <Border Grid.Column="2">
+                            <TextBlock Text="{Binding state}" />
+                        </Border>
+                        <Border Grid.Column="3" >
+                            <Button Content="Mark as finish"></Button>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Template>
+                <ControlTemplate>
+                    <Grid HorizontalAlignment="Left">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Width="772" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="5,0" />
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="BorderBrush" Value="LightGray" />
+                                    <Setter Property="Background" Value="MidnightBlue" />
+                                </Style>
+                            </Grid.Resources>
+                            <Border Grid.Column="0">
+                                <TextBlock>service_id</TextBlock>
+                            </Border>
+                            <Border Grid.Column="1">
+                                <TextBlock>table_id</TextBlock>
+                            </Border>
+                            <Border Grid.Column="2">
+                                <TextBlock >service_state</TextBlock>
+                            </Border>
+                            <Border Grid.Column="3">
+                                <TextBlock >Edit</TextBlock>
+                            </Border>
+                        </Grid>
+                        <ItemsPresenter Grid.Row="1"></ItemsPresenter>
+                    </Grid>
+                </ControlTemplate>
+            </ListView.Template>
+        </ListView>
+
     </Grid>
 </Window>

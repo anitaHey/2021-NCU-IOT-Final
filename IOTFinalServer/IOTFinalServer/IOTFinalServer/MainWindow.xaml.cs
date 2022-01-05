@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
+using IOTFinalServer.View;
+using IOTFinalServer.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +27,15 @@ namespace IOTFinalServer
         public MainWindow()
         {
             InitializeComponent();
+            Closing += (s, e) => ViewModelLocator.Cleanup();
+            Messenger.Default.Register<String>(this, "openPosition", list => {
+                var position = SimpleIoc.Default.GetInstance<PositionViewModel>();
+                var modalWindow = new Position()
+                {
+                    DataContext = position
+                };
+                modalWindow.Show();
+            });
         }
     }
 }
