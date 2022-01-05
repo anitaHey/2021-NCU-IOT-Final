@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-01-04 10:01:48
+-- 產生時間： 2022-01-05 15:54:51
 -- 伺服器版本： 10.4.20-MariaDB
 -- PHP 版本： 7.4.21
 
@@ -52,7 +52,8 @@ INSERT INTO `menu` (`id`, `name`, `content`, `price`, `provide`) VALUES
 (10, '漢堡', '', 45, 1),
 (11, '紅茶', '', 20, 1),
 (12, '蛋餅', '', 40, 1),
-(13, '玉米濃湯', '', 35, 1);
+(13, '玉米濃湯', '', 35, 1),
+(14, '鮪魚蛋餅', '', 30, 1);
 
 -- --------------------------------------------------------
 
@@ -116,6 +117,7 @@ INSERT INTO `service_details` (`service_details_id`, `table_id`, `service_detail
 
 CREATE TABLE `tables` (
   `table_id` int(10) NOT NULL,
+  `table_name` int(50) DEFAULT NULL,
   `table_x` float NOT NULL,
   `table_y` float NOT NULL,
   `customerCount` int(10) NOT NULL,
@@ -127,10 +129,68 @@ CREATE TABLE `tables` (
 --
 
 --
+-- 資料表索引 `menu`
+--
+ALTER TABLE `menu`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- 資料表索引 `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`);
+
+--
+-- 資料表索引 `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`order_id`);
+
+--
+-- 資料表索引 `service_details`
+--
+ALTER TABLE `service_details`
+  ADD PRIMARY KEY (`service_details_id`);
+
+--
+-- 資料表索引 `tables`
+--
+ALTER TABLE `tables`
+  ADD PRIMARY KEY (`table_id`);
+
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `menu`
+--
+ALTER TABLE `menu`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `order_id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `service_details`
+--
+ALTER TABLE `service_details`
+  MODIFY `service_details_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `tables`
+--
+ALTER TABLE `tables`
+  MODIFY `table_id` int(10) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
