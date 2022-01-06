@@ -34,3 +34,15 @@ Final project for IOT course
     * table_id: 桌號 int
     * x: 相對x double
     * y: 相對y double
+* 通知zenbo服務(客人按點餐)
+    * type: response_service
+    * table_id: 桌號 int
+    * x: 相對x double
+    * y: 相對y double
+    * order_id: 訂單編號 int
+* 傳送菜單資訊
+    * type: send_menu
+    * menu: 菜單 jsonarray
+        * meals 餐單 jsonobject
+            * id: int
+            * name: string
