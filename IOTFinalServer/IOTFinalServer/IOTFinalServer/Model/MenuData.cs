@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace IOTFinalServer.Model
 {
-    public class SendToZenboData
+    public class MenuData
     {
         public String type { get; set; }
-        public int table_id { get; set; }
-        public double x { get; set; }
-        public double y { get; set; }
-        public int order_id { get; set; }
+        public DishDataList list { get; set; }
     }
 }

@@ -36,6 +36,19 @@ namespace IOTFinalServer
                 };
                 modalWindow.Show();
             });
+
+            Messenger.Default.Register<String>(this, "openOrder", list => {
+                var position = SimpleIoc.Default.GetInstance<OrderViewModel>();
+                var modalWindow = new Order()
+                {
+                    DataContext = position
+                };
+
+                
+                modalWindow.Closed += (s, args) => this.Close();
+                modalWindow.Show();
+                this.Close();
+            });
         }
     }
 }

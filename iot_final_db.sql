@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-01-05 15:54:51
--- 伺服器版本： 10.4.20-MariaDB
--- PHP 版本： 7.4.21
+-- 產生時間： 
+-- 伺服器版本： 10.4.8-MariaDB
+-- PHP 版本： 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 資料庫: `iot_final_db`
+-- 資料庫： `iot_final_db`
 --
 
 -- --------------------------------------------------------
@@ -65,17 +66,9 @@ CREATE TABLE `orders` (
   `order_id` int(10) NOT NULL,
   `tableNum` int(10) NOT NULL,
   `order_state` int(10) NOT NULL,
-  `orderTime` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
-  `checkTime` timestamp(6) NOT NULL DEFAULT current_timestamp(6)
+  `orderTime` timestamp(6) NULL DEFAULT NULL,
+  `checkTime` timestamp(6) NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- 傾印資料表的資料 `orders`
---
-
-INSERT INTO `orders` (`order_id`, `tableNum`, `order_state`, `orderTime`, `checkTime`) VALUES
-(1, 8888, 1, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(2, 31, 0, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -141,12 +134,6 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`);
 
 --
--- 資料表索引 `order_details`
---
-ALTER TABLE `order_details`
-  ADD PRIMARY KEY (`order_id`);
-
---
 -- 資料表索引 `service_details`
 --
 ALTER TABLE `service_details`
@@ -173,12 +160,6 @@ ALTER TABLE `menu`
 --
 ALTER TABLE `orders`
   MODIFY `order_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `order_details`
---
-ALTER TABLE `order_details`
-  MODIFY `order_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `service_details`

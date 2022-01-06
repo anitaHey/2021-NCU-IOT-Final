@@ -7,6 +7,105 @@
         mc:Ignorable="d"
         Title="Order" Height="450" Width="800">
     <Grid>
-        
+        <Button Command="{Binding ToUnfinished}"  Content="Unfinished service" HorizontalAlignment="Left" Margin="12,13,0,0" VerticalAlignment="Top" Width="119" Height="33"/>
+        <Button Command="{Binding ToFinished}" Content="Finished service" HorizontalAlignment="Left" Margin="136,13,0,0" VerticalAlignment="Top" Width="121" Height="33"/>
+        <Button Command="{Binding OpenPosition}" Content="Open Position window" HorizontalAlignment="Left" Margin="602,13,0,0" VerticalAlignment="Top" Width="169" Height="33"/>
+        <Button Command="{Binding OpenService}" Content="Open Service window" HorizontalAlignment="Left" Margin="450,13,0,0" VerticalAlignment="Top" Width="127" Height="33" Background="#FFD2F0F7"/>
+        <ListView HorizontalAlignment="Left" Height="347" Margin="13,65,0,0" VerticalAlignment="Top" Width="772" ItemsSource="{Binding ShowOrderList}" SelectedItem="{Binding OrderNode}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="772" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="5,0" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="LightGray" />
+                                <Setter Property="Background" Value="#f2f4f6" />
+                            </Style>
+                        </Grid.Resources>
+                        <Border Grid.Column="0">
+                            <TextBlock Text="{Binding order_id}" />
+                        </Border>
+                        <Border Grid.Column="1" >
+                            <TextBlock Text="{Binding table_id}" />
+                        </Border>
+                        <Border Grid.Column="2">
+                            <TextBlock Text="{Binding state}" />
+                        </Border>
+                        <Border Grid.Column="3">
+                            <TextBlock Text="{Binding orderTime}" />
+                        </Border>
+                        <Border Grid.Column="4">
+                            <TextBlock Text="{Binding checkTime}" />
+                        </Border>
+                        <Border Grid.Column="5" >
+                            <Button Content="Mark as finish"></Button>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Template>
+                <ControlTemplate>
+                    <Grid HorizontalAlignment="Left">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Width="772" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="5,0" />
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="BorderBrush" Value="LightGray" />
+                                    <Setter Property="Background" Value="MidnightBlue" />
+                                </Style>
+                            </Grid.Resources>
+                            <Border Grid.Column="0">
+                                <TextBlock>order_id</TextBlock>
+                            </Border>
+                            <Border Grid.Column="1">
+                                <TextBlock>table_id</TextBlock>
+                            </Border>
+                            <Border Grid.Column="2">
+                                <TextBlock >order_state</TextBlock>
+                            </Border>
+                            <Border Grid.Column="3">
+                                <TextBlock >order_time</TextBlock>
+                            </Border>
+                            <Border Grid.Column="4">
+                                <TextBlock >finish_time</TextBlock>
+                            </Border>
+                            <Border Grid.Column="5">
+                                <TextBlock >Edit</TextBlock>
+                            </Border>
+                        </Grid>
+                        <ItemsPresenter Grid.Row="1"></ItemsPresenter>
+                    </Grid>
+                </ControlTemplate>
+            </ListView.Template>
+        </ListView>
     </Grid>
 </Window>

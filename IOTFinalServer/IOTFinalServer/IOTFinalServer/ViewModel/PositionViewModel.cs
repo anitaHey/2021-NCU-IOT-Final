@@ -75,10 +75,10 @@ namespace IOTFinalServer.ViewModel
                     PointData tem = new PointData(NewPointName, "#ceefe4");
                     tem.X = robot.X;
                     tem.Y = robot.Y;
+                    tem.id = database.addPoint(tem);
+
                     PointItems.Add(tem);
                     Messenger.Default.Send(PointItems, "PointItems");
-
-                    database.addPoint(tem);
                 }
 
             });

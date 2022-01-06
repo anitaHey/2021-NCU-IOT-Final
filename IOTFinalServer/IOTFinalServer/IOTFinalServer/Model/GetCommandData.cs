@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace IOTFinalServer.Model
 {
-    public class OrderData
+    public class GetCommandData
     {
-        public int order_id { get; set; }
+        public String type { get; set; }
         public int table_id { get; set; }
-        public int state { get; set; }
-        public String orderTime { get; set; }
-        public String checkTime { get; set; }
+        public int customer_number { get; set; }
+        public int dish_id { get; set; }
+        public int order_id { get; set; }
     }
 }

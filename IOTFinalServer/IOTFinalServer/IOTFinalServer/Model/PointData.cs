@@ -27,6 +27,7 @@ namespace IOTFinalServer.Model
 
         public PointData(String name, String color)
         {
+            this.id = -1;
             this.pointName = name;
             this.color = color;
             this.X = 0;
@@ -35,6 +36,7 @@ namespace IOTFinalServer.Model
             this.state = 0;
         }
 
+        public int id { get; set; }
         public String pointName { get; set; }
         private double _x { get; set; }
         public double X

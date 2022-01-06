@@ -44,50 +44,10 @@ namespace IOTFinalServer.ViewModel
             });
 
             OpenOrder = new RelayCommand(() => {
-                if (server.isZenboConnect())
-               {
-                    SendToZenboData place = new SendToZenboData();
-                    place.type = "response_table";
-                    place.table_id = 1;
-                    
-                    place.x = ((getPointXY("A").Y - getZenboXY().Y) / 100);
-                    place.y = -((getPointXY("A").X - getZenboXY().X) / 100) ;
-
-                     server.sendMsg(place);
-                }
+                Messenger.Default.Send("open", "openOrder");
             });
 
             OpenPosition = new RelayCommand(() => { Messenger.Default.Send("open", "openPosition"); });
-
-            Messenger.Default.Register<ObservableCollection<PointData>>(this, "PointItems", list => {
-                PointItems = list;
-            });
-        }
-
-        public PointData getZenboXY()
-        {
-            foreach(PointData tem in PointItems)
-            {
-                if(tem.pointName == "me")
-                {
-                    return tem;
-                }
-            }
-
-            return null;
-        }
-
-        public PointData getPointXY(String name)
-        {
-            foreach (PointData tem in PointItems)
-            {
-                if (tem.pointName == name)
-                {
-                    return tem;
-                }
-            }
-
-            return null;
         }
 
         private List<ServiceData> _serviceList;
@@ -148,7 +108,7 @@ namespace IOTFinalServer.ViewModel
             set
             {
                 _showServiceList = value;
-                RaisePropertyChanged(() => _showServiceList);
+                RaisePropertyChanged(() => ShowServiceList);
             }
         }
 
@@ -171,7 +131,5 @@ namespace IOTFinalServer.ViewModel
                 _finishedServiceList = value;
             }
         }
-
-        public ObservableCollection<PointData> PointItems { get; set; }
     }
 }

@@ -118,6 +118,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\DatabaseManager.cs" />
     <Compile Include="Model\OrderData.cs" />
+    <Compile Include="Model\OrderDetailData.cs" />
     <Compile Include="Model\SendToZenboData.cs" />
     <Compile Include="Model\ServiceData.cs" />
     <Compile Include="Model\SocketExtensions.cs" />
